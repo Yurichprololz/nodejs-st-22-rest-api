@@ -10,7 +10,7 @@ export class UserServiceService {
   constructor(private userFilterService: UserFilterService) {}
   users: IUser[] = [];
 
-  getUsers(limit: string | undefined, loginSubstring: string | undefined) {
+  getUsers(limit: number, loginSubstring: string | undefined) {
     let arr = this.userFilterService.filterByNotDeleted(this.users);
 
     if (loginSubstring) {

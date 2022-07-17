@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
@@ -18,7 +19,7 @@ export class UsersController {
 
   @Get()
   GetUsers(
-    @Query('limit') limit: string | undefined,
+    @Query('limit', new DefaultValuePipe(NaN)) limit: number,
     @Query('loginSubstring') loginSubstring: string | undefined,
   ) {
     return this.usersService.getUsers(limit, loginSubstring);
