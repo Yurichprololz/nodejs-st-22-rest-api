@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CreateUserDTO } from '../users-dto/create-users.dto';
 import { UpdateUserDTO } from '../users-dto/update-users.dto';
@@ -16,8 +17,11 @@ export class UsersController {
   constructor(private usersService: UserServiceService) {}
 
   @Get()
-  GetUsers() {
-    return this.usersService.getUsers();
+  GetUsers(
+    @Query('limit') limit: string | undefined,
+    @Query('loginSubstring') loginSubstring: string | undefined,
+  ) {
+    return this.usersService.getUsers(limit, loginSubstring);
   }
 
   @Get(':id')

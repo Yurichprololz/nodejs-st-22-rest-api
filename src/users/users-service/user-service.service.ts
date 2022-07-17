@@ -3,13 +3,23 @@ import { v4 } from 'uuid';
 import { IUser } from '../model/user.model';
 import { CreateUserDTO } from '../users-dto/create-users.dto';
 import { UpdateUserDTO } from '../users-dto/update-users.dto';
+import { UserFilterService } from './user-filter/user-filter.service';
 
 @Injectable()
 export class UserServiceService {
+  constructor(private userFilterService: UserFilterService) {}
   users: IUser[] = [];
 
-  getUsers() {
-    return this.users.filter((user) => !user.isDeleted);
+  getUsers(limit: string | undefined, loginSubstring: string | undefined) {
+    let arr = this.userFilterService.filterByNotDeleted(this.users);
+
+    if (loginSubstring) {
+      arr = this.userFilterService.filterByString(arr, loginSubstring);
+    }
+    if (limit) {
+      arr = this.userFilterService.filterByLimit(arr, limit);
+    }
+    return arr;
   }
 
   getUserById(id: string) {
