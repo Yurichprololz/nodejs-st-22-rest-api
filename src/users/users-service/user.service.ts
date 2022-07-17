@@ -46,4 +46,8 @@ export class UserService {
   removeUser(id: string) {
     this.getUserById(id).isDeleted = true;
   }
+
+  isNotUnique(userDto: CreateUserDTO) {
+    return this.users.some((user) => user.login === userDto.login);
+  }
 }

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   DefaultValuePipe,
@@ -33,6 +34,9 @@ export class UsersController {
 
   @Post()
   createUser(@Body() user: CreateUserDTO) {
+    if (this.usersService.isNotUnique(user)) {
+      throw new BadRequestException("The login isn't unique");
+    }
     return this.usersService.createUser(user);
   }
 
