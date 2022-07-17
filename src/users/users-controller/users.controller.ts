@@ -20,9 +20,10 @@ export class UsersController {
   @Get()
   GetUsers(
     @Query('limit', new DefaultValuePipe(NaN)) limit: number,
+    @Query('offset', new DefaultValuePipe(0)) offset: number,
     @Query('loginSubstring') loginSubstring: string | undefined,
   ) {
-    return this.usersService.getUsers(limit, loginSubstring);
+    return this.usersService.getUsers(limit, offset, loginSubstring);
   }
 
   @Get(':id')

@@ -9,8 +9,8 @@ export class UserFilterService {
     );
   }
 
-  filterByLimit(users: IUser[], limit: number) {
-    return users.splice(0, limit);
+  filterByLimit(users: IUser[], limit: number, offset: number) {
+    return users.splice(offset * limit, limit);
   }
 
   filterByNotDeleted(users: IUser[]) {
