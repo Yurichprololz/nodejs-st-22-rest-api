@@ -54,4 +54,8 @@ export class UserService {
     }
     return undefined;
   }
+
+  isNotUnique(userDto: CreateUserDTO) {
+    return this.users.some((user) => user.login === userDto.login);
+  }
 }
