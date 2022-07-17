@@ -6,7 +6,7 @@ import { UpdateUserDTO } from '../users-dto/update-users.dto';
 import { UserFilterService } from './user-filter/user-filter.service';
 
 @Injectable()
-export class UserServiceService {
+export class UserService {
   constructor(private userFilterService: UserFilterService) {}
   users: IUser[] = [];
 

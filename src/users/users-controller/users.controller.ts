@@ -11,11 +11,11 @@ import {
 } from '@nestjs/common';
 import { CreateUserDTO } from '../users-dto/create-users.dto';
 import { UpdateUserDTO } from '../users-dto/update-users.dto';
-import { UserServiceService } from '../users-service/user-service.service';
+import { UserService } from '../users-service/user.service';
 
 @Controller('v1/users')
 export class UsersController {
-  constructor(private usersService: UserServiceService) {}
+  constructor(private usersService: UserService) {}
 
   @Get()
   GetUsers(
