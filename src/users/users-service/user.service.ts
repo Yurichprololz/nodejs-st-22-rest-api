@@ -22,12 +22,12 @@ export class UserService {
     return arr;
   }
 
-  getUserById(id: string) {
-    return this.users.find((user) => user.id === id);
+  getUserById(id: string): IUser | undefined {
+    return this.users.find((user) => user.id === id && !user?.isDeleted);
   }
 
-  getUserIndexById(id: string) {
-    return this.users.findIndex((user) => user.id === id);
+  getUserIndexById(id: string): number {
+    return this.users.findIndex((user) => user.id === id && !user?.isDeleted);
   }
 
   createUser(userDto: CreateUserDTO) {
@@ -36,14 +36,22 @@ export class UserService {
     return user;
   }
 
-  updateUser(id: string, userDto: UpdateUserDTO) {
-    const newUser = { id, ...userDto, isDeleted: false };
+  updateUser(id: string, userDto: UpdateUserDTO): IUser | undefined {
+    const newUser: IUser = { id, ...userDto, isDeleted: false };
     const index = this.getUserIndexById(id);
-    this.users[index] = newUser;
-    return newUser;
+    if (index !== -1) {
+      this.users[index] = newUser;
+      return newUser;
+    }
+    return undefined;
   }
 
   removeUser(id: string) {
-    this.getUserById(id).isDeleted = true;
+    const user = this.getUserById(id);
+    if (user) {
+      user.isDeleted = true;
+      return user;
+    }
+    return undefined;
   }
 }

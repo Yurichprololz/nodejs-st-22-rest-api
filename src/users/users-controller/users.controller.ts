@@ -4,6 +4,7 @@ import {
   DefaultValuePipe,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -28,7 +29,11 @@ export class UsersController {
 
   @Get(':id')
   GetUserById(@Param('id') id: string) {
-    return this.usersService.getUserById(id);
+    const user = this.usersService.getUserById(id);
+    if (user) {
+      return user;
+    }
+    throw new NotFoundException("User does'n exist");
   }
 
   @Post()
@@ -38,11 +43,18 @@ export class UsersController {
 
   @Put(':id')
   updateUser(@Param('id') id: string, @Body() user: UpdateUserDTO) {
-    return this.usersService.updateUser(id, user);
+    const newUser = this.usersService.updateUser(id, user);
+    if (newUser) {
+      return newUser;
+    }
+    throw new NotFoundException("User does'n exist");
   }
 
   @Delete(':id')
   removeUser(@Param('id') id: string) {
-    return this.usersService.removeUser(id);
+    const user = this.usersService.removeUser(id);
+    if (!user) {
+      throw new NotFoundException("User does'n exist");
+    }
   }
 }
