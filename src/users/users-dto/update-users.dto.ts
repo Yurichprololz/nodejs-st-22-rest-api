@@ -1,5 +1,3 @@
-export class UpdateUserDTO {
-  readonly login: string;
-  readonly password: string;
-  readonly age: number;
-}
+import { CreateUserDTO } from './create-users.dto';
+
+export class UpdateUserDTO extends CreateUserDTO {}

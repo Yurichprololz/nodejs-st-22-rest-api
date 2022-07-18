@@ -47,6 +47,9 @@ export class UsersController {
 
   @Put(':id')
   updateUser(@Param('id') id: string, @Body() user: UpdateUserDTO) {
+    if (this.usersService.isNotUnique(user)) {
+      throw new BadRequestException("The login isn't unique");
+    }
     const newUser = this.usersService.updateUser(id, user);
     if (newUser) {
       return newUser;
