@@ -1,7 +1,7 @@
 export interface IUser {
-  id?: string;
+  id: string;
   login: string;
   password: string;
   age: number;
-  isDeleted?: boolean;
+  isDeleted: boolean;
 }

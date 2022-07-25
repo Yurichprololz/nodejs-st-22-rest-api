@@ -58,8 +58,4 @@ export class UserService {
   isNotUnique(userDto: CreateUserDTO) {
     return this.users.some((user) => user.login === userDto.login);
   }
-
-  isNotUnique(userDto: CreateUserDTO) {
-    return this.users.some((user) => user.login === userDto.login);
-  }
 }
