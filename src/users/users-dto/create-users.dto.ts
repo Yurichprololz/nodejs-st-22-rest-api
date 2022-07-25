@@ -13,8 +13,8 @@ export class CreateUserDTO {
   readonly login: string;
 
   @IsString()
-  @Matches(/\d.+?[a-z]|[a-z].+?\d/i, {
-    message: 'The password must contains number and figure',
+  @Matches(/\d.?[a-z]|[a-z].?\d/i, {
+    message: 'The password must contains lettes and figuries',
   })
   readonly password: string;
 
