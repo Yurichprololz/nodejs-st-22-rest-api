@@ -10,6 +10,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+import { UserErrors } from 'src/interface/user.errors.enum';
 import { CreateUserDTO } from '../users-dto/create-users.dto';
 import { UpdateUserDTO } from '../users-dto/update-users.dto';
 import { UserService } from '../users-service/user.service';
@@ -33,7 +34,7 @@ export class UsersController {
     if (user) {
       return user;
     }
-    throw new NotFoundException("User does'n exist");
+    throw new NotFoundException(UserErrors.NotExist);
   }
 
   @Post()
@@ -48,14 +49,14 @@ export class UsersController {
     if (newUser) {
       return newUser;
     }
-    throw new NotFoundException("User does'n exist");
+    throw new NotFoundException(UserErrors.NotExist);
   }
 
   @Delete(':id')
   async removeUser(@Param('id') id: string) {
     const user = await this.usersService.removeUser(id);
     if (user === null) {
-      throw new NotFoundException("User does'n exist");
+      throw new NotFoundException(UserErrors.NotExist);
     }
   }
 }

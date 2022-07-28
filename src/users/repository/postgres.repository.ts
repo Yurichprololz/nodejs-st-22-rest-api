@@ -1,9 +1,12 @@
-import { ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { FindOptions, Op } from 'sequelize';
 import { User } from '../model/user.model';
 import { CreateUserDTO } from '../users-dto/create-users.dto';
 import { UpdateUserDTO } from '../users-dto/update-users.dto';
+import {
+  getFindOneOptions,
+  getFindOptions,
+  isUniqueConstraintError,
+} from './repository.helper';
 import { UsersRepository } from './users.repository';
 
 export class PostgresUsersRepository implements UsersRepository {
@@ -14,45 +17,28 @@ export class PostgresUsersRepository implements UsersRepository {
       const user = await this.UserModel.create({ ...data });
       return user;
     } catch (error) {
-      if (error.name === 'SequelizeUniqueConstraintError')
-        throw new ConflictException('The user with this login already exists');
+      isUniqueConstraintError(error);
+      return null;
     }
   }
 
   async findByID(id: string): Promise<User | null> {
     try {
-      const user = await this.UserModel.findOne({
-        where: {
-          id,
-          isDeleted: false,
-        },
-      });
+      const options = getFindOneOptions(id);
+      const user = await this.UserModel.findOne(options);
       return user;
-    } catch (error) {
+    } catch {
       return null;
     }
   }
+
   async findAll(
     limit: number,
     offset: number,
     loginSubstring: string | undefined,
   ): Promise<User[]> {
-    const condition: FindOptions = {
-      where: {
-        isDeleted: false,
-        login: {
-          [Op.iLike]: loginSubstring ? `%${loginSubstring}%` : '%',
-        },
-      },
-    };
-
-    if (limit) {
-      condition.where;
-      condition.limit = limit;
-      condition.offset = offset;
-    }
-
-    const users = await this.UserModel.findAll(condition);
+    const options = getFindOptions(limit, offset, loginSubstring);
+    const users = await this.UserModel.findAll(options);
     return users;
   }
 
@@ -63,9 +49,7 @@ export class PostgresUsersRepository implements UsersRepository {
       await user.save();
       return user;
     } catch (error) {
-      if (error.name === 'SequelizeUniqueConstraintError') {
-        throw new ConflictException('The user with this login already exists');
-      }
+      isUniqueConstraintError(error);
       return null;
     }
   }
