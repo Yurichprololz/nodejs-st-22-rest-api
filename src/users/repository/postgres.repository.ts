@@ -1,4 +1,5 @@
 import { InjectModel } from '@nestjs/sequelize';
+import { FindOptions, Op } from 'sequelize';
 import { User } from '../model/user.model';
 import { CreateUserDTO } from '../users-dto/create-users.dto';
 import { UpdateUserDTO } from '../users-dto/update-users.dto';
@@ -12,7 +13,7 @@ export class PostgresUsersRepository implements UsersRepository {
     return user;
   }
 
-  async findByID(id: string): Promise<User> {
+  async findByID(id: string): Promise<User | undefined> {
     const user = await this.UserModel.findOne({
       where: {
         id,
@@ -21,9 +22,27 @@ export class PostgresUsersRepository implements UsersRepository {
     });
     return user;
   }
+  async findAll(
+    limit: number,
+    offset: number,
+    loginSubstring: string | undefined,
+  ): Promise<User[]> {
+    const condition: FindOptions = {
+      where: {
+        isDeleted: false,
+        login: {
+          [Op.iLike]: loginSubstring ? `%${loginSubstring}%` : '%',
+        },
+      },
+    };
 
-  async findAll(): Promise<User[]> {
-    const users = await this.UserModel.findAll({ where: { isDeleted: false } });
+    if (limit) {
+      condition.where;
+      condition.limit = limit;
+      condition.offset = offset;
+    }
+
+    const users = await this.UserModel.findAll(condition);
     return users;
   }
 
@@ -36,6 +55,7 @@ export class PostgresUsersRepository implements UsersRepository {
 
   async remove(id: string): Promise<void> {
     const user = await this.findByID(id);
-    await user.destroy();
+    user.isDeleted = true;
+    await user.save();
   }
 }

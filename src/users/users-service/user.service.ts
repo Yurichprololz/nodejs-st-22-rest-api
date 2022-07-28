@@ -1,61 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { v4 } from 'uuid';
 import { IUser } from '../model/user.model';
+import { PostgresUsersRepository } from '../repository/postgres.repository';
 import { CreateUserDTO } from '../users-dto/create-users.dto';
 import { UpdateUserDTO } from '../users-dto/update-users.dto';
-import { UserFilterService } from './user-filter/user-filter.service';
 
 @Injectable()
 export class UserService {
-  constructor(private userFilterService: UserFilterService) {}
-  users: IUser[] = [];
+  constructor(private repository: PostgresUsersRepository) {}
 
-  getUsers(limit: number, offset: number, loginSubstring: string | undefined) {
-    let arr = this.userFilterService.filterByNotDeleted(this.users);
-
-    if (loginSubstring) {
-      arr = this.userFilterService.filterByString(arr, loginSubstring);
-    }
-    if (limit) {
-      arr = this.userFilterService.filterByLimit(arr, limit, offset);
-    }
-    return arr;
+  async getUsers(
+    limit: number,
+    offset: number,
+    loginSubstring: string | undefined,
+  ) {
+    const users = await this.repository.findAll(limit, offset, loginSubstring);
+    return users;
   }
 
-  getUserById(id: string): IUser | undefined {
-    return this.users.find((user) => user.id === id && !user?.isDeleted);
-  }
-
-  getUserIndexById(id: string): number {
-    return this.users.findIndex((user) => user.id === id && !user?.isDeleted);
-  }
-
-  createUser(userDto: CreateUserDTO) {
-    const user = { id: v4(), ...userDto, isDeleted: false };
-    this.users.push(user);
+  async getUserById(id: string): Promise<IUser> {
+    const user = await this.repository.findByID(id);
     return user;
   }
 
-  updateUser(id: string, userDto: UpdateUserDTO): IUser | undefined {
-    const newUser: IUser = { id, ...userDto, isDeleted: false };
-    const index = this.getUserIndexById(id);
-    if (index !== -1) {
-      this.users[index] = newUser;
-      return newUser;
-    }
-    return undefined;
+  async createUser(userDto: CreateUserDTO) {
+    const user = await this.repository.create(userDto);
+    return user;
   }
 
-  removeUser(id: string) {
-    const user = this.getUserById(id);
-    if (user) {
-      user.isDeleted = true;
-      return user;
-    }
-    return undefined;
+  async updateUser(id: string, userDto: UpdateUserDTO) {
+    const user = await this.repository.update(id, userDto);
+    return user;
   }
 
-  isNotUnique(userDto: CreateUserDTO) {
-    return this.users.some((user) => user.login === userDto.login);
+  async removeUser(id: string) {
+    await this.repository.remove(id);
   }
 }

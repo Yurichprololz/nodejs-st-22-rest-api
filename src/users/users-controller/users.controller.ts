@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   DefaultValuePipe,
@@ -20,17 +19,17 @@ export class UsersController {
   constructor(private usersService: UserService) {}
 
   @Get()
-  GetUsers(
+  async GetUsers(
     @Query('limit', new DefaultValuePipe(NaN)) limit: number,
     @Query('offset', new DefaultValuePipe(0)) offset: number,
     @Query('loginSubstring') loginSubstring: string | undefined,
   ) {
-    return this.usersService.getUsers(limit, offset, loginSubstring);
+    return await this.usersService.getUsers(limit, offset, loginSubstring);
   }
 
   @Get(':id')
-  GetUserById(@Param('id') id: string) {
-    const user = this.usersService.getUserById(id);
+  async GetUserById(@Param('id') id: string) {
+    const user = await this.usersService.getUserById(id);
     if (user) {
       return user;
     }
@@ -38,19 +37,13 @@ export class UsersController {
   }
 
   @Post()
-  createUser(@Body() user: CreateUserDTO) {
-    if (this.usersService.isNotUnique(user)) {
-      throw new BadRequestException("The login isn't unique");
-    }
-    return this.usersService.createUser(user);
+  async createUser(@Body() user: CreateUserDTO) {
+    return await this.usersService.createUser(user);
   }
 
   @Put(':id')
-  updateUser(@Param('id') id: string, @Body() user: UpdateUserDTO) {
-    if (this.usersService.isNotUnique(user)) {
-      throw new BadRequestException("The login isn't unique");
-    }
-    const newUser = this.usersService.updateUser(id, user);
+  async updateUser(@Param('id') id: string, @Body() user: UpdateUserDTO) {
+    const newUser = await this.usersService.updateUser(id, user);
     if (newUser) {
       return newUser;
     }
@@ -58,10 +51,10 @@ export class UsersController {
   }
 
   @Delete(':id')
-  removeUser(@Param('id') id: string) {
-    const user = this.usersService.removeUser(id);
-    if (!user) {
-      throw new NotFoundException("User does'n exist");
-    }
+  async removeUser(@Param('id') id: string) {
+    const user = await this.usersService.removeUser(id);
+    // if (!user) {
+    //   throw new NotFoundException("User does'n exist");
+    // }
   }
 }
