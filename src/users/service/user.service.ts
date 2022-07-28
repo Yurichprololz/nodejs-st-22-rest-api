@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { IUser } from '../model/user.model';
 import { PostgresUsersRepository } from '../repository/postgres.repository';
 import { CreateUserDTO } from '../dto/create-users.dto';
 import { UpdateUserDTO } from '../dto/update-users.dto';
@@ -17,7 +16,7 @@ export class UserService {
     return users;
   }
 
-  async getUserById(id: string): Promise<IUser> {
+  async getUserById(id: string) {
     const user = await this.repository.findByID(id);
     return user;
   }

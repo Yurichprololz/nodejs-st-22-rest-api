@@ -7,13 +7,13 @@ import {
   Unique,
 } from 'sequelize-typescript';
 
-export interface IUser {
-  id: string;
-  login: string;
-  password: string;
-  age: number;
-  isDeleted: boolean;
-}
+// export interface IUser {
+//   id: string;
+//   login: string;
+//   password: string;
+//   age: number;
+//   isDeleted: boolean;
+// }
 
 @Table({ tableName: 'user' })
 export class User extends Model {
