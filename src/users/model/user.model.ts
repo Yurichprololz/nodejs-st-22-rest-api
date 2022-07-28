@@ -4,6 +4,7 @@ import {
   Model,
   PrimaryKey,
   Table,
+  Unique,
 } from 'sequelize-typescript';
 
 export interface IUser {
@@ -20,6 +21,7 @@ export class User extends Model {
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })
   id: string;
 
+  @Unique({ name: 'string', msg: 'exists' })
   @Column
   login: string;
 

@@ -37,8 +37,9 @@ export class UsersController {
   }
 
   @Post()
-  async createUser(@Body() user: CreateUserDTO) {
-    return await this.usersService.createUser(user);
+  async createUser(@Body() dto: CreateUserDTO) {
+    const user = await this.usersService.createUser(dto);
+    return user;
   }
 
   @Put(':id')
@@ -53,8 +54,8 @@ export class UsersController {
   @Delete(':id')
   async removeUser(@Param('id') id: string) {
     const user = await this.usersService.removeUser(id);
-    // if (!user) {
-    //   throw new NotFoundException("User does'n exist");
-    // }
+    if (user === null) {
+      throw new NotFoundException("User does'n exist");
+    }
   }
 }

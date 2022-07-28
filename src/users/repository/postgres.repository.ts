@@ -1,3 +1,4 @@
+import { ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { FindOptions, Op } from 'sequelize';
 import { User } from '../model/user.model';
@@ -9,18 +10,27 @@ export class PostgresUsersRepository implements UsersRepository {
   constructor(@InjectModel(User) private UserModel: typeof User) {}
 
   async create(data: CreateUserDTO) {
-    const user = await this.UserModel.create({ ...data });
-    return user;
+    try {
+      const user = await this.UserModel.create({ ...data });
+      return user;
+    } catch (error) {
+      if (error.name === 'SequelizeUniqueConstraintError')
+        throw new ConflictException('The user with this login already exists');
+    }
   }
 
-  async findByID(id: string): Promise<User | undefined> {
-    const user = await this.UserModel.findOne({
-      where: {
-        id,
-        isDeleted: false,
-      },
-    });
-    return user;
+  async findByID(id: string): Promise<User | null> {
+    try {
+      const user = await this.UserModel.findOne({
+        where: {
+          id,
+          isDeleted: false,
+        },
+      });
+      return user;
+    } catch (error) {
+      return null;
+    }
   }
   async findAll(
     limit: number,
@@ -47,14 +57,22 @@ export class PostgresUsersRepository implements UsersRepository {
   }
 
   async update(id: string, dto: UpdateUserDTO): Promise<User> {
-    const user = await this.findByID(id);
-    user.set({ ...dto });
-    await user.save();
-    return user;
+    try {
+      const user = await this.findByID(id);
+      user.set({ ...dto });
+      await user.save();
+      return user;
+    } catch (error) {
+      if (error.name === 'SequelizeUniqueConstraintError') {
+        throw new ConflictException('The user with this login already exists');
+      }
+      return null;
+    }
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string): Promise<void | null> {
     const user = await this.findByID(id);
+    if (user === null) return null;
     user.isDeleted = true;
     await user.save();
   }

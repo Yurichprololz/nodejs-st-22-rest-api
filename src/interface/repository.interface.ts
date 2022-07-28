@@ -7,5 +7,5 @@ export interface Repository<T, C, U> {
     loginSubstring: string | undefined,
   ): Promise<T[]>;
   update(id: string, dto: U): Promise<T>;
-  remove(id: string): Promise<void>;
+  remove(id: string): Promise<void | null>;
 }
