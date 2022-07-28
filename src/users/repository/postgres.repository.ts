@@ -1,12 +1,12 @@
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '../model/user.model';
-import { CreateUserDTO } from '../users-dto/create-users.dto';
-import { UpdateUserDTO } from '../users-dto/update-users.dto';
+import { CreateUserDTO } from '../dto/create-users.dto';
+import { UpdateUserDTO } from '../dto/update-users.dto';
 import {
   getFindOneOptions,
   getFindOptions,
   isUniqueConstraintError,
-} from './repository.helper';
+} from '../helpers/repository.helper';
 import { UsersRepository } from './users.repository';
 
 export class PostgresUsersRepository implements UsersRepository {

@@ -10,10 +10,10 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { UserErrors } from 'src/interface/user.errors.enum';
-import { CreateUserDTO } from '../users-dto/create-users.dto';
-import { UpdateUserDTO } from '../users-dto/update-users.dto';
-import { UserService } from '../users-service/user.service';
+import { UserErrors } from 'src/users/helpers/user.errors.enum';
+import { CreateUserDTO } from '../dto/create-users.dto';
+import { UpdateUserDTO } from '../dto/update-users.dto';
+import { UserService } from '../service/user.service';
 
 @Controller('v1/users')
 export class UsersController {

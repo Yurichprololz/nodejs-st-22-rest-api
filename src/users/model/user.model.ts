@@ -21,7 +21,7 @@ export class User extends Model {
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })
   id: string;
 
-  @Unique({ name: 'string', msg: 'exists' })
+  @Unique
   @Column
   login: string;
 
