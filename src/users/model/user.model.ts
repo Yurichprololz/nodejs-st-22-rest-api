@@ -4,15 +4,16 @@ import {
   Model,
   PrimaryKey,
   Table,
+  Unique,
 } from 'sequelize-typescript';
 
-export interface IUser {
-  id: string;
-  login: string;
-  password: string;
-  age: number;
-  isDeleted: boolean;
-}
+// export interface IUser {
+//   id: string;
+//   login: string;
+//   password: string;
+//   age: number;
+//   isDeleted: boolean;
+// }
 
 @Table({ tableName: 'user' })
 export class User extends Model {
@@ -20,6 +21,7 @@ export class User extends Model {
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })
   id: string;
 
+  @Unique
   @Column
   login: string;
 
