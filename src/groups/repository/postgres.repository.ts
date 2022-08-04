@@ -12,8 +12,12 @@ export class PostgresGroupsRepository implements GroupsRepository {
   }
 
   async findByID(id: string): Promise<Group> {
-    const group = await this.GroupModel.findByPk(id);
-    return group;
+    try {
+      const group = await this.GroupModel.findByPk(id);
+      return group;
+    } catch {
+      return null;
+    }
   }
 
   async findAll(): Promise<Group[]> {
@@ -22,13 +26,21 @@ export class PostgresGroupsRepository implements GroupsRepository {
   }
 
   async update(id: string, dto: UpdateGroupDto): Promise<Group> {
-    const group = await this.findByID(id);
-    group.set({ ...dto });
-    await group.save();
-    return group;
+    try {
+      const group = await this.findByID(id);
+      group.set({ ...dto });
+      await group.save();
+      return group;
+    } catch {
+      return null;
+    }
   }
 
   async remove(id: string): Promise<void> {
-    await this.GroupModel.destroy({ where: { id } });
+    try {
+      await this.GroupModel.destroy({ where: { id } });
+    } catch {
+      return null;
+    }
   }
 }

@@ -3,6 +3,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
+import { GroupsErrorsMessages } from '../helpers/groups.errors.enum';
 
 const permission = ['READ', 'WRITE', 'DELETE', 'SHARE', 'UPLOAD_FILES'];
 @ValidatorConstraint({ name: 'ArrayOfPermission', async: true })
@@ -15,6 +16,6 @@ export class ArrayOfPermission implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return `Permission must only contain 'READ', 'WRITE', 'DELETE', 'SHARE', 'UPLOAD_FILES`;
+    return GroupsErrorsMessages.InvalidPermission;
   }
 }
