@@ -4,6 +4,8 @@ import {
   DefaultValuePipe,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   NotFoundException,
   Param,
   Post,
@@ -37,6 +39,7 @@ export class UsersController {
     throw new NotFoundException(UserErrors.NotExist);
   }
 
+  @HttpCode(HttpStatus.CREATED)
   @Post()
   async createUser(@Body() dto: CreateUserDTO) {
     const user = await this.usersService.createUser(dto);
@@ -53,6 +56,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async removeUser(@Param('id') id: string) {
     const user = await this.usersService.removeUser(id);
     if (user === null) {

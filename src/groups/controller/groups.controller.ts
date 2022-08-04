@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   NotFoundException,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { GroupsService } from '../services/groups.service';
 import { CreateGroupDto } from '../dto/create-group.dto';
@@ -18,6 +20,7 @@ export class GroupsController {
   constructor(private readonly groupsService: GroupsService) {}
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   async create(@Body() createGroupDto: CreateGroupDto) {
     const group = await this.groupsService.create(createGroupDto);
     return group;
@@ -32,7 +35,7 @@ export class GroupsController {
   async findOne(@Param('id') id: string) {
     const group = await this.groupsService.findOne(id);
     if (!group) {
-      return new NotFoundException(GroupsErrorsMessages.NotExist);
+      throw new NotFoundException(GroupsErrorsMessages.NotExist);
     }
     return group;
   }
@@ -41,17 +44,17 @@ export class GroupsController {
   update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
     const group = this.groupsService.update(id, updateGroupDto);
     if (!group) {
-      return new NotFoundException(GroupsErrorsMessages.NotExist);
+      throw new NotFoundException(GroupsErrorsMessages.NotExist);
     }
     return group;
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string) {
     const group = await this.groupsService.remove(id);
     if (group === null) {
-      return new NotFoundException(GroupsErrorsMessages.NotExist);
+      throw new NotFoundException(GroupsErrorsMessages.NotExist);
     }
-    return group;
   }
 }
