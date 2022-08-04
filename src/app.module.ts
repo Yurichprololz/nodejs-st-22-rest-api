@@ -3,10 +3,13 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './users/model/user.model';
+import { GroupsModule } from './groups/groups.module';
+import { Group } from './groups/model/groups.model';
 
 @Module({
   imports: [
     UsersModule,
+    GroupsModule,
     ConfigModule.forRoot(),
     SequelizeModule.forRoot({
       dialect: 'postgres',
@@ -15,7 +18,7 @@ import { User } from './users/model/user.model';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      models: [User],
+      models: [User, Group],
       autoLoadModels: true,
       define: {
         timestamps: false,
