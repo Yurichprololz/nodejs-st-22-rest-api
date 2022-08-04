@@ -1,4 +1,5 @@
 import { IsArray, IsString, Validate } from 'class-validator';
+import { Permission } from '../interface/permission.interface';
 import { ArrayOfPermission } from '../validation/ArrayOfPermisson';
 
 export class CreateGroupDto {

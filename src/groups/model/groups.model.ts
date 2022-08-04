@@ -5,7 +5,7 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-// import { Permission } from '../interface/permission';
+import { Permission } from '../interface/permission.interface';
 
 @Table({ tableName: 'group' })
 export class Group extends Model {
