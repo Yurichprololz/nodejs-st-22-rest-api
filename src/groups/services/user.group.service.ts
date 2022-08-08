@@ -22,8 +22,9 @@ export class UserGroupsService {
         if (group && user) {
           await group.$add('users', [user.id], transactionHost);
           await user.$add('groups', [group.id], transactionHost);
+        } else {
+          throw new BadRequestException('Transaction has rollbacked');
         }
-        throw new BadRequestException('Transaction has rollbacked');
       });
     } catch (err) {
       throw err;

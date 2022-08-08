@@ -34,8 +34,12 @@ export class GroupsController {
   @Post('addUsers')
   @HttpCode(HttpStatus.CREATED)
   async addUsersToGroup(@Body() dto: addUsersToGroupDto) {
+    const arr = [];
     const { groupId, userIds } = dto;
-    await this.userGroupService.addUsersToGroup(groupId, userIds);
+    userIds.forEach((userId) => {
+      arr.push(this.userGroupService.addUsersToGroup(groupId, userId));
+    });
+    await Promise.all(arr);
   }
 
   @Get()

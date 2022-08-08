@@ -1,9 +1,10 @@
-import { IsUUID } from 'class-validator';
+import { IsArray, IsUUID } from 'class-validator';
 
 export class addUsersToGroupDto {
   @IsUUID()
   groupId: string;
 
-  @IsUUID()
-  userIds: string;
+  @IsArray()
+  @IsUUID(4, { each: true })
+  userIds: string[];
 }
