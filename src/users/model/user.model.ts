@@ -1,4 +1,5 @@
 import {
+  BelongsToMany,
   Column,
   DataType,
   Model,
@@ -6,14 +7,8 @@ import {
   Table,
   Unique,
 } from 'sequelize-typescript';
-
-// export interface IUser {
-//   id: string;
-//   login: string;
-//   password: string;
-//   age: number;
-//   isDeleted: boolean;
-// }
+import { Group } from 'src/groups/model/groups.model';
+import { UserGroup } from 'src/groups/model/user.group.model';
 
 @Table({ tableName: 'user' })
 export class User extends Model {
@@ -33,4 +28,7 @@ export class User extends Model {
 
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
   isDeleted: boolean;
+
+  @BelongsToMany(() => Group, () => UserGroup)
+  groups: Group[];
 }

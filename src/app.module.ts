@@ -5,6 +5,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './users/model/user.model';
 import { GroupsModule } from './groups/groups.module';
 import { Group } from './groups/model/groups.model';
+import { UserGroup } from './groups/model/user.group.model';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { Group } from './groups/model/groups.model';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      models: [User, Group],
+      models: [User, Group, UserGroup],
       autoLoadModels: true,
       define: {
         timestamps: false,
