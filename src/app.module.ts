@@ -20,7 +20,6 @@ import { UserGroup } from './groups/model/user.group.model';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       models: [User, Group, UserGroup],
-      autoLoadModels: true,
       define: {
         timestamps: false,
         createdAt: false,
