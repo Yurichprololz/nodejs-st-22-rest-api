@@ -5,13 +5,9 @@ import { UpdateGroupDto } from '../dto/update-group.dto';
 import { GroupsRepository } from './groups.repository';
 import { Transaction } from 'sequelize';
 import { User } from 'src/users/model/user.model';
-import { Sequelize } from 'sequelize-typescript';
 
 export class PostgresGroupsRepository implements GroupsRepository {
-  constructor(
-    @InjectModel(Group) private GroupModel: typeof Group,
-    private sequlize: Sequelize,
-  ) {}
+  constructor(@InjectModel(Group) private GroupModel: typeof Group) {}
   async create(dto: CreateGroupDto): Promise<Group> {
     const group = await this.GroupModel.create({ ...dto });
     return group;
