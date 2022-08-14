@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
@@ -6,6 +6,7 @@ import { User } from './users/model/user.model';
 import { GroupsModule } from './groups/groups.module';
 import { Group } from './groups/model/groups.model';
 import { UserGroup } from './groups/model/user.group.model';
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
 
 @Module({
   imports: [
@@ -35,6 +36,10 @@ import { UserGroup } from './groups/model/user.group.model';
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [LoggerMiddleware, Logger],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
