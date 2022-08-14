@@ -7,6 +7,8 @@ import { GroupsModule } from './groups/groups.module';
 import { Group } from './groups/model/groups.model';
 import { UserGroup } from './groups/model/user.group.model';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ErrorLoggerInterceptor } from './common/interceptor/error-logger.interceptor';
 
 @Module({
   imports: [
@@ -36,7 +38,14 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
     }),
   ],
   controllers: [],
-  providers: [LoggerMiddleware, Logger],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ErrorLoggerInterceptor,
+    },
+    LoggerMiddleware,
+    Logger,
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
