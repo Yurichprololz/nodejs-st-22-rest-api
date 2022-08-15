@@ -14,16 +14,32 @@ import { GroupsService } from '../services/groups.service';
 import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 import { GroupsErrorsMessages } from '../helpers/groups.errors.enum';
+import { addUsersToGroupDto } from '../dto/add-users-to-group';
+import { UserGroupsService } from '../services/user.group.service';
 
 @Controller('v1/groups')
 export class GroupsController {
-  constructor(private readonly groupsService: GroupsService) {}
+  constructor(
+    private readonly groupsService: GroupsService,
+    private readonly userGroupService: UserGroupsService,
+  ) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createGroupDto: CreateGroupDto) {
     const group = await this.groupsService.create(createGroupDto);
     return group;
+  }
+
+  @Post('addUsers')
+  @HttpCode(HttpStatus.CREATED)
+  async addUsersToGroup(@Body() dto: addUsersToGroupDto) {
+    const arr = [];
+    const { groupId, userIds } = dto;
+    userIds.forEach((userId) => {
+      arr.push(this.userGroupService.addUsersToGroup(groupId, userId));
+    });
+    await Promise.all(arr);
   }
 
   @Get()

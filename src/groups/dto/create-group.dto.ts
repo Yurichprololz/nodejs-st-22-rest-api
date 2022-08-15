@@ -1,12 +1,14 @@
-import { IsArray, IsString, Validate } from 'class-validator';
-import { Permission } from '../interface/permission.interface';
-import { ArrayOfPermission } from '../validation/ArrayOfPermisson';
+import { IsArray, IsEnum, IsString } from 'class-validator';
+import {
+  arrayOfPermission,
+  Permission,
+} from '../interface/permission.interface';
 
 export class CreateGroupDto {
   @IsString()
   name: string;
 
   @IsArray()
-  @Validate(ArrayOfPermission)
+  @IsEnum(arrayOfPermission, { each: true })
   permission: Permission[];
 }

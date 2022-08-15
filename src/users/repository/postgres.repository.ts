@@ -8,6 +8,8 @@ import {
   isUniqueConstraintError,
 } from '../helpers/repository.helper';
 import { UsersRepository } from './users.repository';
+import { Transaction } from 'sequelize';
+import { Group } from 'src/groups/model/groups.model';
 
 export class PostgresUsersRepository implements UsersRepository {
   constructor(@InjectModel(User) private UserModel: typeof User) {}
@@ -25,6 +27,7 @@ export class PostgresUsersRepository implements UsersRepository {
   async findByID(id: string): Promise<User | null> {
     try {
       const options = getFindOneOptions(id);
+      options.include = Group;
       const user = await this.UserModel.findOne(options);
       return user;
     } catch {
@@ -42,11 +45,21 @@ export class PostgresUsersRepository implements UsersRepository {
     return users;
   }
 
-  async update(id: string, dto: UpdateUserDTO): Promise<User> {
+  async update(
+    id: string,
+    dto: UpdateUserDTO | string,
+    transactionHost?: { transaction: Transaction },
+  ): Promise<User> {
     try {
-      const user = await this.findByID(id);
-      user.set({ ...dto });
-      await user.save();
+      const user = await this.UserModel.findByPk(id, transactionHost);
+      // console.log(typeof dto);
+      if (typeof dto === 'string') {
+        user.set({ groups: dto });
+        return await user.save(transactionHost);
+      } else {
+        user.set({ ...dto });
+        await user.save();
+      }
       return user;
     } catch (error) {
       isUniqueConstraintError(error);
