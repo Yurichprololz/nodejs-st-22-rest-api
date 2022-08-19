@@ -23,6 +23,7 @@ import { ErrorLoggerInterceptor } from './common/interceptor/error-logger.interc
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       models: [User, Group, UserGroup],
+      autoLoadModels: true,
       define: {
         timestamps: false,
         createdAt: false,
