@@ -11,7 +11,9 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt.strategy';
 import { UserErrors } from 'src/users/helpers/user.errors.enum';
 import { CreateUserDTO } from '../dto/create-users.dto';
 import { UpdateUserDTO } from '../dto/update-users.dto';
@@ -22,6 +24,7 @@ export class UsersController {
   constructor(private usersService: UserService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async GetUsers(
     @Query('limit', new DefaultValuePipe(NaN)) limit: number,
     @Query('offset', new DefaultValuePipe(0)) offset: number,
