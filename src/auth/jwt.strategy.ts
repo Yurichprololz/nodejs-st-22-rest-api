@@ -1,6 +1,10 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { AuthGuard, PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import jwtSecret from './jwt-secret';
 
 @Injectable()
@@ -19,4 +23,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 }
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {}
+export class JwtAuthGuard extends AuthGuard('jwt') {
+  handleRequest(err, user, info) {
+    if (info.toString() === 'Error: No auth token') {
+      throw new UnauthorizedException();
+    } else if (err || !user) {
+      throw new ForbiddenException();
+    }
+    return user;
+  }
+}

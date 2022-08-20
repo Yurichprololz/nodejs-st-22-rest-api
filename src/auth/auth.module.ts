@@ -15,7 +15,7 @@ import jwtSecret from './jwt-secret';
     PassportModule,
     JwtModule.register({
       secret: `${jwtSecret.secret}`,
-      signOptions: { expiresIn: '30m' },
+      signOptions: { expiresIn: '30' },
     }),
   ],
   controllers: [AuthController],
