@@ -35,6 +35,15 @@ export class PostgresUsersRepository implements UsersRepository {
     }
   }
 
+  async findByName(login: string): Promise<User | null> {
+    try {
+      const user = await this.UserModel.findOne({ where: { login } });
+      return user;
+    } catch {
+      return null;
+    }
+  }
+
   async findAll(
     limit: number,
     offset: number,

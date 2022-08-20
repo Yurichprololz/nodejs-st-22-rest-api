@@ -6,6 +6,7 @@ import { GroupsModule } from './groups/groups.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ErrorLoggerInterceptor } from './common/interceptor/error-logger.interceptor';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ErrorLoggerInterceptor } from './common/interceptor/error-logger.interc
       },
       // synchronize: false,
     }),
+    AuthModule,
   ],
   controllers: [],
   providers: [
