@@ -21,6 +21,11 @@ export class UserService {
     return user;
   }
 
+  async getUserByName(name: string) {
+    const user = await this.repository.findByName(name);
+    return user;
+  }
+
   async createUser(userDto: CreateUserDTO) {
     const user = await this.repository.create(userDto);
     return user;

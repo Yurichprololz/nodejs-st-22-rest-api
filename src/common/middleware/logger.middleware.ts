@@ -6,10 +6,10 @@ import { inspect } from 'util';
 export class LoggerMiddleware implements NestMiddleware {
   constructor(private logger: Logger) {}
   use(req: Request, res: Response, next: NextFunction) {
-    this.logger.log(`path: ${req.originalUrl}`);
-    this.logger.log(`response: ${inspect(res)}`);
-    this.logger.log(`request: ${inspect(req)}`);
-    this.logger.log(`method: ${req.method}`);
+    // this.logger.log(`path: ${req.originalUrl}`);
+    // this.logger.log(`response: ${inspect(res)}`);
+    this.logger.log(`request: ${inspect(req.headers)}`);
+    // this.logger.log(`method: ${req.method}`);
     next();
   }
 }
