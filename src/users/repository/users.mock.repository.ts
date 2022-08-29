@@ -33,6 +33,7 @@ export class mockUserRepositoryService {
   getUserIndexById(id: string): number {
     return this.users.findIndex((user) => user.id === id && !user?.isDeleted);
   }
+
   create(userDto: CreateUserDTO) {
     const user = { id: v4(), ...userDto, isDeleted: false };
     this.users.push(user);
@@ -71,6 +72,7 @@ export class UserFilterService {
   filterByLimit(users: IUser[], limit: number, offset: number) {
     return users.splice(offset * limit, limit);
   }
+
   sortArrayByLogin(x: IUser, y: IUser) {
     return x.login.localeCompare(y.login);
   }

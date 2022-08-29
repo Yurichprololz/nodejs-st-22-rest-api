@@ -6,7 +6,7 @@ import { PostgresUsersRepository } from '../repository/postgres.repository';
 import {
   mockUserRepositoryService,
   UserFilterService,
-} from '../repository/users.mock.repositoru';
+} from '../repository/users.mock.repository';
 import { UserService } from '../service/user.service';
 import { UsersController } from './users.controller';
 
