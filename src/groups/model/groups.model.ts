@@ -6,7 +6,7 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { User } from 'src/users/model/user.model';
+import { User } from '../../users/model/user.model';
 import {
   arrayOfPermission,
   Permission,

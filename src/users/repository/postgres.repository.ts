@@ -9,7 +9,7 @@ import {
 } from '../helpers/repository.helper';
 import { UsersRepository } from './users.repository';
 import { Transaction } from 'sequelize';
-import { Group } from 'src/groups/model/groups.model';
+import { Group } from '../../groups/model/groups.model';
 
 export class PostgresUsersRepository implements UsersRepository {
   constructor(@InjectModel(User) private UserModel: typeof User) {}
@@ -61,7 +61,6 @@ export class PostgresUsersRepository implements UsersRepository {
   ): Promise<User> {
     try {
       const user = await this.UserModel.findByPk(id, transactionHost);
-      // console.log(typeof dto);
       if (typeof dto === 'string') {
         user.set({ groups: dto });
         return await user.save(transactionHost);

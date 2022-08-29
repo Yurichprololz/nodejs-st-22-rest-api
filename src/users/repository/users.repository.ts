@@ -1,4 +1,4 @@
-import { Repository } from 'src/interface/repository.interface';
+import { Repository } from '../../interface/repository.interface';
 import { User } from '../model/user.model';
 import { CreateUserDTO } from '../dto/create-users.dto';
 import { UpdateUserDTO } from '../dto/update-users.dto';

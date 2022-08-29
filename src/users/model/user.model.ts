@@ -7,8 +7,8 @@ import {
   Table,
   Unique,
 } from 'sequelize-typescript';
-import { Group } from 'src/groups/model/groups.model';
-import { UserGroup } from 'src/groups/model/user.group.model';
+import { Group } from '../../groups/model/groups.model';
+import { UserGroup } from '../../groups/model/user.group.model';
 
 @Table({ tableName: 'user' })
 export class User extends Model {

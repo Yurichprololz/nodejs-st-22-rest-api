@@ -1,6 +1,6 @@
 import { ConflictException } from '@nestjs/common';
 import { FindOptions, Op } from 'sequelize';
-import { UserErrors } from 'src/users/helpers/user.errors.enum';
+import { UserErrors } from '../../users/helpers/user.errors.enum';
 
 const getFindOptions = (
   limit: number,

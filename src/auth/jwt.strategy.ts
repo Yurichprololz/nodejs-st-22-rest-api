@@ -27,7 +27,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   handleRequest(err, user, info) {
     if (info.toString() === 'Error: No auth token') {
       throw new UnauthorizedException();
-    } else if (err || !user) {
+    } else if (err) {
       throw new ForbiddenException();
     }
     return user;
