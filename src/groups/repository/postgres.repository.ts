@@ -4,7 +4,7 @@ import { CreateGroupDto } from '../dto/create-group.dto';
 import { UpdateGroupDto } from '../dto/update-group.dto';
 import { GroupsRepository } from './groups.repository';
 import { Transaction } from 'sequelize';
-import { User } from 'src/users/model/user.model';
+import { User } from '../../users/model/user.model';
 
 export class PostgresGroupsRepository implements GroupsRepository {
   constructor(@InjectModel(Group) private GroupModel: typeof Group) {}

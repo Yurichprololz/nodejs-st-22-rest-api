@@ -13,8 +13,8 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt.strategy';
-import { UserErrors } from 'src/users/helpers/user.errors.enum';
+import { JwtAuthGuard } from '../../auth/jwt.strategy';
+import { UserErrors } from '../../users/helpers/user.errors.enum';
 import { CreateUserDTO } from '../dto/create-users.dto';
 import { UpdateUserDTO } from '../dto/update-users.dto';
 import { UserService } from '../service/user.service';

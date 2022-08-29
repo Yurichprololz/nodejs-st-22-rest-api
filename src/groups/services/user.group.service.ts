@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
-import { User } from 'src/users/model/user.model';
+import { User } from '../../users/model/user.model';
 import { Group } from '../model/groups.model';
 
 @Injectable()
